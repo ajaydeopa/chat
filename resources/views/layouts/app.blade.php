@@ -80,6 +80,7 @@
     <script src="{{ asset('js/app.js') }}"></script>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js" type="text/javascript"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.4.2/vue.min.js"></script>
     @yield('footer')
 </body>
 </html>
