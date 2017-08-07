@@ -33,5 +33,6 @@ Route::post('/new/friend', 'HomeController@newFriend');
 Route::post('/new/user', 'HomeController@newUser');
 Route::post('/check/channel', 'HomeController@checkChannel');
 Route::post('/check/member', 'HomeController@checkMember');
+Route::post('/check/friend', 'HomeController@checkFriend');
 Route::get('/get/messages', 'HomeController@channelMessages');
 Route::post('/member/list', 'HomeController@channelMembers');

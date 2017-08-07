@@ -14,6 +14,11 @@
   .members {
     margin-left: 10
   }
+
+  .list-group {
+    height: 125px;
+    overflow-y: scroll;
+  }
 </style>
 
 @section('content')
@@ -318,9 +323,12 @@
             form = $('#group-form').serializeArray();
             $.post(url, form, function(channel){
               $('#group-modal').modal('hide');
-              content = '<li class="list-group-item channel" gid="' + channel['id'] + '" style="cursor: pointer">' + channel['channel'] + '</li>';
+              content = '<li class="list-group-item channel" gid="' + channel['id'] + '" type="1" style="cursor: pointer">' + channel['channel'] + '</li>';
 
               $('#group-list').append(content);
+
+              content = '<div id="chat'+ channel['id'] +'" style="overflow-y:scroll; height:400px; display: none"></div>';
+              $('#all').append(content);
             });
           }
           else
@@ -345,7 +353,7 @@
             form = $('#friend-form').serializeArray();
             $.post(url, form, function(channel){
               $('#friend-modal').modal('hide');
-              content = '<li class="list-group-item channel" gid="' + channel['id'] + '" style="cursor: pointer">' + channel['name'] + '</li>';
+              content = '<li class="list-group-item channel" gid="' + channel['id'] + '" type="0" style="cursor: pointer">' + channel['name'] + '</li>';
 
               $('#friend-list').append(content);
 
@@ -359,7 +367,7 @@
             form = $('#friend-form').serializeArray();
             $.post(url, form, function(channel){
               $('#friend-modal').modal('hide');
-              content = '<li class="list-group-item channel" gid="' + channel['id'] + '" style="cursor: pointer">' + channel['name'] + '</li>';
+              content = '<li class="list-group-item channel" gid="' + channel['id'] + '" type="0" style="cursor: pointer">' + channel['name'] + '</li>';
 
               $('#friend-list').append(content);
 
@@ -370,7 +378,7 @@
           else if( ch == -2 )
             $('#friend-form').find('#error').html('Enter someone elses email id');
           else
-            $('#friend-form').find('#error').html(email+' already exists in friends list');
+            $('#friend-form').find('#error').html(name+' already exists in friends list');
         });
       }
     });
