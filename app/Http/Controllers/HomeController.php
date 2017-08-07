@@ -110,6 +110,7 @@ class HomeController extends Controller
       $messages = $channel->message()
                           ->join('users', 'users.id', 'messages.user_id')
                           ->select('messages.*', 'users.name')
+                          ->orderBy('messages.id')
                           ->get();
 
       foreach ($messages as $msg)
