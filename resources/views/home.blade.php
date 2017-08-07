@@ -224,13 +224,14 @@
     });
 
     $(function(){
-      latest = '{{$friends->first()->id}}';
-      $('#chat'+latest).show();
-      action.push(latest);
-      $('.channel[gid="'+latest+'"]').addClass('active');
-      messages(latest);
-      call(latest);
-      //$('#message').attr('onblur', 'this.focus()');
+      @if( $friends->count() > 0 )
+        latest = '{{$friends->first()->id}}';
+        $('#chat'+latest).show();
+        action.push(latest);
+        $('.channel[gid="'+latest+'"]').addClass('active');
+        messages(latest);
+        call(latest);
+      @endif
     });
 
     function messages(id)
