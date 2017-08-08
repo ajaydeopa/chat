@@ -41,7 +41,10 @@ class HomeController extends Controller
         $temp = $friend->user()->where('user_id', '!=', $user->id)->first();
         $friend->detail = User::select('id', 'name', 'email')->find($temp->user_id);
       }
-      return view('home', compact('user', 'channels', 'friends', 'all'));
+
+      $users = User::all()->except($user->id);
+      //return $users;
+      return view('home', compact('user', 'channels', 'friends', 'all', 'users'));
     }
 
     public function checkChannel(Request $request)

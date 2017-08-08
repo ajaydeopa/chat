@@ -140,6 +140,17 @@
           {{ csrf_field() }}
           <strong id="error" style="color: red; font-size: 12px"></strong>
           <div class="form-group">
+            <label for="sel1">Select from existing users</label>
+            <select class="form-control select_user" type="friend">
+              <option value="0"></option>
+              @foreach($users as $user)
+                <option value="{{$user->email}}">{{$user->name}}</option>
+              @endforeach
+            </select>
+          </div>
+          <h5 style="text-align: center;"><B>Or</B></h5>
+          <div class="form-group">
+            <label for="sel1">Enter email</label>
             <input type="email" class="form-control" name="email" placeholder="Email" autofocus>
           </div>
           <div class="form-group">
@@ -169,6 +180,17 @@
           {{ csrf_field() }}
           <strong id="error" style="color: red; font-size: 12px"></strong>
           <div class="form-group">
+            <label for="sel1">Select from existing users</label>
+            <select class="form-control select_user" type="member">
+              <option value="0"></option>
+              @foreach($users as $user)
+                <option value="{{$user->email}}">{{$user->name}}</option>
+              @endforeach
+            </select>
+          </div>
+          <h5 style="text-align: center;"><B>Or</B></h5>
+          <div class="form-group">
+            <label for="sel1">Enter email</label>
             <input type="email" class="form-control" id="memail" placeholder="Email" autofocus required>
           </div>
           <div class="form-group">
@@ -212,6 +234,15 @@
     var latest;
     var action = new Array();
 
+    $('.select_user').change(function(){
+      type = $(this).attr('type');
+      val  = $(this).val();
+      if( type == 'friend' )
+        $('input[name="email"]').val(val);
+      else
+        $('#memail').val(val);
+    });
+
     $('#member-list').click(function(){
       $('#all-member-modal').modal();
       url = '{{url("member/list")}}';
@@ -226,6 +257,8 @@
     $('#button-member').click(function(){
       $('#member-modal').modal();
       $('#memail').val('');
+      $('.select_user').val('0');
+      $('#member-form').find('#error').html('');
     });
 
     $(function(){
@@ -300,6 +333,8 @@
     $('#friends').click(function(){
       $('#friend-modal').modal();
       $('input[name="email"]').val('');
+      $('.select_user').val('0');
+      $('#friend-form').find('#error').html('');
     });
 
     $('#groups').click(function(){
