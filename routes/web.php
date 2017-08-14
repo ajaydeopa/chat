@@ -36,3 +36,5 @@ Route::post('/check/member', 'HomeController@checkMember');
 Route::post('/check/friend', 'HomeController@checkFriend');
 Route::get('/get/messages', 'HomeController@channelMessages');
 Route::post('/member/list', 'HomeController@channelMembers');
+Route::post('/song/upload', 'HomeController@uploadSong');
+Route::post('get/songs', 'HomeController@allSongs');

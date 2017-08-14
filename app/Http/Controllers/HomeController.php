@@ -7,27 +7,19 @@ use Auth;
 use App\Channel;
 use App\ChannelUser;
 use App\User;
+use App\Songs;
 use Carbon\Carbon;
 
 use App\Events\EventName;
+use App\Http\Controllers\mp3file;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
       $user = Auth::user();
@@ -43,8 +35,7 @@ class HomeController extends Controller
       }
 
       $users = User::all()->except($user->id);
-      //return $users;
-      return view('home', compact('user', 'channels', 'friends', 'all', 'users'));
+      return view('home', compact('user', 'channels', 'friends', 'all', 'users', 'songs'));
     }
 
     public function checkChannel(Request $request)
@@ -100,11 +91,20 @@ class HomeController extends Controller
     public function message($group, Request $request)
     {
       date_default_timezone_set('Asia/Kolkata');
+      $type = $request->type;
       $user = Auth::user();
-      $msg = $request->message;
-      $channel = Channel::find($group);
-      $channel->message()->create(['user_id' => $user->id, 'message' => $msg, 'at' => Carbon::now()]);
-      event(new EventName($group, $user, $msg));
+
+      if( $type == 'msg' )
+      {
+        $time    = Carbon::now();
+        $msg     = $request->message;
+        $channel = Channel::find($group);
+        $channel->message()->create(['user_id' => $user->id, 'message' => $msg, 'at' => $time]);
+        event(new EventName($group, $user, $msg, $time->format('H:i'), $type));
+        return;
+      }
+      //return $request->all();
+      event(new EventName($group, $user, $request->index, $request->curr, $type));
     }
 
     public function channelMessages(Request $request)
@@ -156,5 +156,53 @@ class HomeController extends Controller
                        ->select('users.name', 'users.email')
                        ->get();
       return $users;
+    }
+
+    public function uploadSong(Request $request)
+    {
+      $file = $request->file('file');
+      $len = new mp3file($file);
+      $duration = $len->getDuration();
+      try
+      {
+        $path = public_path().'/songs';
+        $name = $file->getClientOriginalName();
+        $file->move($path, $name);
+        Songs::create(['name' => $name, 'duration' => $len->formatTime($duration)]);
+        return 'success';
+      }
+      catch( \Exception $e )
+      {
+        return $e;
+      }
+    }
+
+    public function allSongs()
+    {
+      $songs = Songs::all();
+      $song = [];
+      $i = 1;
+
+      foreach ($songs as $s)
+      {
+        $string = $s->name;
+        $pos = strlen($string) - 1;
+        while( $pos >= 0 )
+        {
+          if( $string[$pos] == '.' )
+            break;
+          $pos--;
+        }
+
+        $first  = substr($string, 0, $pos);
+
+        $song[$i-1]['id']     = $s->id;
+        $song[$i-1]['track']  = $i;
+        $song[$i-1]['name']   = $first;
+        $song[$i-1]['file']   = $first;
+        $song[$i-1]['length'] = $s->duration;
+        $i++;
+      }
+      return $song;
     }
 }

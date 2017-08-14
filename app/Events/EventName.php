@@ -21,14 +21,29 @@ class EventName implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct($group, $user, $msg)
+    public function __construct($group, $user, $msg_idx, $time, $type)
     {
+      if( $type == 'msg' )
+      {
         $this->data = array(
-            'name' => $user->name,
-            'msg'  => $msg,
-            'time' => Carbon::now()->format('H:i'),
-            'group'=> $group
+          'id'   => $user->id,
+          'name' => $user->name,
+          'msg'  => $msg_idx,
+          'time' => $time,
+          'group'=> $group,
+          'type' => 'msg'
         );
+      }
+      else
+      {
+        $this->data = array(
+          'id'   => $user->id,
+          'idx'  => $msg_idx,
+          'curr' => $time,
+          'group'=> $group,
+          'type' => $type
+        );
+      }
     }
 
     /**

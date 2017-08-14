@@ -11,7 +11,8 @@
     <title>{{ config('app.name', 's') }}</title>
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">    
+    <link href="{{ asset('css/fileinput.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/base/jquery-ui.css">
 </head>
@@ -48,6 +49,7 @@
                             <li><a href="{{ route('login') }}">Login</a></li>
                             <li><a href="{{ route('register') }}">Register</a></li>
                         @else
+                            
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     {{ Auth::user()->name }} <span class="caret"></span>
@@ -77,10 +79,16 @@
     </div>
 
     <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <script src="{{ asset('js/app.js') }}"></script>
-    
+    <script src="{{ asset('js/piexif.min.js') }}"></script>
+    <script src="{{ asset('js/purify.min.js') }}"></script>
+    <script src="{{ asset('js/sortable.min.js') }}"></script>
+    <script src="{{ asset('js/fileinput.min.js') }}"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.4.2/vue.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js" type="text/javascript"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.4.2/vue.min.js"></script>
+    <!--<script src="{{ asset('js/player.js') }}"></script>-->
     @yield('footer')
 </body>
 </html>
